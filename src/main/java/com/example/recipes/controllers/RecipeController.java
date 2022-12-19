@@ -17,14 +17,22 @@ public class RecipeController {
     }
 
     @PostMapping
-    public ResponseEntity createRecipe(@RequestBody Recipe recipe) {
+    public ResponseEntity<Recipe> createRecipe(@RequestBody Recipe recipe) {
         recipeService.addRecipe(recipe);
         return ResponseEntity.ok(recipe);
     }
 
     @GetMapping("get")
-    public ResponseEntity getRecipe(@RequestParam int recipeId) {
+    public ResponseEntity<Recipe> getRecipe(@RequestParam int recipeId) {
         Recipe recipe = recipeService.getRecipe(recipeId);
+        if (recipe == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(recipe);
+    }
+    @PutMapping("put")
+    public ResponseEntity<Recipe> editRecipe(@RequestBody Recipe recipe){
+        Recipe recipe = recipeService.editRecipe(Recipe recipe );
         if (recipe == null) {
             return ResponseEntity.notFound().build();
         }

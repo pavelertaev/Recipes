@@ -15,14 +15,14 @@ public class IngredientController {
     }
 
     @PostMapping()
-    public ResponseEntity createIngredient(@RequestBody Ingredient ingredient) {
+    public ResponseEntity<Ingredient> createIngredient(@RequestBody Ingredient ingredient) {
         ingredientService.addIngredient(ingredient);
         return ResponseEntity.ok(ingredient);
     }
 
 
     @GetMapping("get")
-    public ResponseEntity getIngredient(@RequestParam int ingredientId) {
+    public ResponseEntity<Ingredient> getIngredient(@RequestParam int ingredientId) {
         Ingredient ingredient = ingredientService.getIngredient(ingredientId);
         if (ingredient == null) {
             return ResponseEntity.notFound().build();

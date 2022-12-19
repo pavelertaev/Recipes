@@ -21,4 +21,22 @@ public class RecipeServiceImpl implements RecipeService {
     public Recipe getRecipe(long id) {
         return recipes.get(id);
     }
+
+    @Override
+    public Recipe editRecipe(long id, Recipe recipe) {
+        if (recipes.containsKey(id)) {
+            recipes.put(id, recipe);
+            return recipe;
+        }
+        return null;
+    }
+    @Override
+    public boolean deleteRecipe(long id, Recipe recipe){
+        if (recipes.containsKey(id)) {
+            recipes.remove(id, recipe);
+            return true;
+        }
+        return false;
+    }
+
 }
