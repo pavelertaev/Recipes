@@ -21,7 +21,7 @@ public class IngredientController {
     }
 
 
-    @GetMapping("get")
+    @GetMapping("/get")
     public ResponseEntity<Ingredient> getIngredient(@RequestParam int ingredientId) {
         Ingredient ingredient = ingredientService.getIngredient(ingredientId);
         if (ingredient == null) {

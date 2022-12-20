@@ -22,7 +22,7 @@ public class RecipeController {
         return ResponseEntity.ok(recipe);
     }
 
-    @GetMapping("get")
+    @GetMapping("/get")
     public ResponseEntity<Recipe> getRecipe(@RequestParam int recipeId) {
         Recipe recipe = recipeService.getRecipe(recipeId);
         if (recipe == null) {
