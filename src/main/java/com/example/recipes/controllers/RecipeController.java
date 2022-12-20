@@ -30,12 +30,20 @@ public class RecipeController {
         }
         return ResponseEntity.ok(recipe);
     }
-    @PutMapping("put")
-    public ResponseEntity<Recipe> editRecipe(@RequestBody Recipe recipe){
-        Recipe recipe = recipeService.editRecipe(Recipe recipe );
-        if (recipe == null) {
-            return ResponseEntity.notFound().build();
+    @PutMapping("/{id}")
+    public ResponseEntity<Recipe> editIngredient(@PathVariable long id, @RequestBody Recipe newRecipe) {
+        if (recipeService.getRecipe(id) != null) {
+            Recipe recipe = recipeService.editRecipe(id, newRecipe);
+            return ResponseEntity.ok(recipe);
         }
-        return ResponseEntity.ok(recipe);
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteRecipe(@PathVariable long id) {
+        if (recipeService.deleteRecipe(id)) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }

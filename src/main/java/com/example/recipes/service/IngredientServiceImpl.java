@@ -18,21 +18,25 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public Ingredient getIngredient(long id) {
-        return ingredients.get(id);
+        if (ingredients.containsKey(id)) {
+            return ingredients.get(id);
+        }
+        return null;
     }
 
+
     @Override
-    public Ingredient editIngredient(long id, Ingredient ingredient) {
+    public Ingredient editIngredient(long id, Ingredient newingredient) {
         if (ingredients.containsKey(id)) {
-            ingredients.put(id, ingredient);
-            return ingredient;
+            ingredients.put(id, newingredient);
+            return newingredient;
         }
         return null;
     }
     @Override
-    public boolean deleteIngredient(long id , Ingredient ingredient){
+    public boolean deleteIngredient(long id ){
         if (ingredients.containsKey(id)) {
-            ingredients.remove(id, ingredient);
+            ingredients.remove(id);
             return true;
         }
         return false;

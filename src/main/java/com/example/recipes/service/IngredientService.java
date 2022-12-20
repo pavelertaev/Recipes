@@ -6,6 +6,7 @@ public interface IngredientService {
     public void addIngredient(Ingredient ingredient);
     public Ingredient getIngredient(long id);
 
-    Ingredient editIngredient(long id, Ingredient ingredient);
-    boolean deleteIngredient(long id, Ingredient ingredient);
+    Ingredient editIngredient(long id, Ingredient newingredient);
+
+    boolean deleteIngredient(long id);
 }
