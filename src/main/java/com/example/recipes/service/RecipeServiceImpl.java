@@ -21,13 +21,13 @@ public class RecipeServiceImpl implements RecipeService {
     }
     @PostConstruct
     private void unit(){
-        readFromFileRecipe();
+        readFromFile();
     }
 
     @Override
     public void addRecipe(Recipe recipe) {
         recipes.put(lastId++, recipe);
-        saveToFileRecipe();
+        saveToFile();
 
     }
 
@@ -44,7 +44,7 @@ public class RecipeServiceImpl implements RecipeService {
     public Recipe editRecipe(long id, Recipe newRecipe) {
         if (recipes.containsKey(id)) {
             recipes.put(id, newRecipe);
-            saveToFileRecipe();
+            saveToFile();
             return newRecipe;
         }
 
@@ -55,26 +55,32 @@ public class RecipeServiceImpl implements RecipeService {
     public boolean deleteRecipe(long id) {
         if (recipes.containsKey(id)) {
             recipes.remove(id);
+            saveToFile();
             return true;
         }
         return false;
     }
 
-    private void saveToFileRecipe() {
+    private void readFromFile() {
         try {
-            String json = new ObjectMapper().writeValueAsString(recipes);
-            filesService.saveToFile(json);
+            String json = filesService.readRecipesFromFile();
+            if(!json.isBlank()){
+                recipes = new ObjectMapper().readValue(json, new TypeReference<>() {
+                });
+                lastId = recipes.size();
+            }
         } catch (JsonProcessingException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
 
-    private void readFromFileRecipe() {
+    private void saveToFile() {
         try {
-            String json = filesService.readFromFile();
-            recipes = new ObjectMapper().readValue(json, new TypeReference<TreeMap<Long, Recipe>>() {
-            });
+            String json = new ObjectMapper().writeValueAsString(recipes);
+            filesService.saveRecipesToFile(json);
         } catch (JsonProcessingException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }

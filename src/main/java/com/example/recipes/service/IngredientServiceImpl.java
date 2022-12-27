@@ -22,12 +22,13 @@ public class IngredientServiceImpl implements IngredientService {
     }
     @PostConstruct
     private void unit(){
-        readFromFileIngredient();
+        readFromFile();
     }
 
     @Override
     public void addIngredient(Ingredient ingredient) {
         ingredients.put(lastId++, ingredient);
+        saveToFile();
     }
 
     @Override
@@ -43,7 +44,8 @@ public class IngredientServiceImpl implements IngredientService {
     public Ingredient editIngredient(long id, Ingredient newingredient) {
         if (ingredients.containsKey(id)) {
             ingredients.put(id, newingredient);
-            return newingredient;
+            saveToFile();
+            return ingredients.get(id);
         }
         return null;
     }
@@ -51,24 +53,31 @@ public class IngredientServiceImpl implements IngredientService {
     public boolean deleteIngredient(long id ){
         if (ingredients.containsKey(id)) {
             ingredients.remove(id);
+            saveToFile();
             return true;
         }
         return false;
     }
-    private void saveToFileIngredient() {
+    private void readFromFile() {
         try {
-            String json = new ObjectMapper().writeValueAsString(ingredients);
-            filesService.saveToFile(json);
+            String json = filesService.readIngredientsFromFile();
+            if(!json.isBlank()){
+                ingredients = new ObjectMapper().readValue(json, new TypeReference<>() {
+                });
+                lastId = ingredients.size();
+            }
         } catch (JsonProcessingException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
-    private void readFromFileIngredient() {
+
+    private void saveToFile() {
         try {
-            String json = filesService.readFromFile();
-            ingredients = new ObjectMapper().readValue(json, new TypeReference<TreeMap<Long, Ingredient>>() {
-            });
+            String json = new ObjectMapper().writeValueAsString(ingredients);
+            filesService.saveIngredientToFile(json);
         } catch (JsonProcessingException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }

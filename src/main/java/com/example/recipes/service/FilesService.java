@@ -1,7 +1,11 @@
 package com.example.recipes.service;
 
 public interface FilesService {
-    boolean saveToFile(String json);
+    boolean saveIngredientToFile(String json);
 
-    String readFromFile();
+    String readIngredientsFromFile();
+
+    boolean saveRecipesToFile(String json);
+
+    String readRecipesFromFile();
 }
