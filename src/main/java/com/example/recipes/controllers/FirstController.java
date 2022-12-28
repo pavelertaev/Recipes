@@ -9,7 +9,7 @@ public class FirstController {
 
     @GetMapping
     public String helloWorld(){
-        return "Привет , это приложение с рецептами";
+        return "Приложение запущено";
     }
     @GetMapping("/info")
     public String Info(@RequestParam String name , String nameProject , Integer dateOfCreation , String description){

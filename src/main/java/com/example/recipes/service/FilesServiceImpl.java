@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -61,6 +62,14 @@ public class FilesServiceImpl implements FilesService {
             return false;
         }
     }
+    @Override
+    public Path createTempFile(String suffix){
+        try {
+           return Files.createTempFile(Path.of(dataFilePath),"tempfile",suffix);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private String readFromFile(String fileName) {
         try {
@@ -70,8 +79,8 @@ public class FilesServiceImpl implements FilesService {
             throw new RuntimeException(e);
         }
     }
-
-    private void cleanFile(String fileName) {
+    @Override
+    public void cleanFile(String fileName) {
         try {
             Files.deleteIfExists(Path.of(dataFilePath, fileName));
             Files.createFile(Path.of(dataFilePath, fileName));
@@ -79,5 +88,13 @@ public class FilesServiceImpl implements FilesService {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+    @Override
+    public File getFileIngredient(){
+        return new File(dataFilePath + "/" + ingredientsFileName );
+    }
+    @Override
+    public File getFileRecipe(){
+        return new File(dataFilePath + "/" + recipesFileName);
     }
 }
