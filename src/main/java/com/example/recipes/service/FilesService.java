@@ -19,4 +19,8 @@ public interface FilesService {
     File getFileIngredient();
 
     File getFileRecipe();
+
+    void cleanIngredientFile();
+
+    void cleanRecipeFile();
 }

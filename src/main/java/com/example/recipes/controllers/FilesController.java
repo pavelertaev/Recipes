@@ -55,7 +55,7 @@ public class FilesController {
 
     @PostMapping(value = "/import/ingredient" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> uploadIngredientFile(@RequestParam MultipartFile file) {
-        filesService.cleanFile(filesService.readIngredientsFromFile());
+        filesService.cleanIngredientFile();
         File ingredientFile = filesService.getFileIngredient();
         try(FileOutputStream fosIngredient = new FileOutputStream(ingredientFile)){
             IOUtils.copy(file.getInputStream(),fosIngredient);
@@ -67,7 +67,7 @@ public class FilesController {
     }
     @PostMapping(value = "/import/recipe" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> uploadRecipeFile(@RequestParam MultipartFile file) {
-        filesService.cleanFile(filesService.readRecipesFromFile());
+        filesService.cleanRecipeFile();
         File recipeFile = filesService.getFileRecipe();
         try(FileOutputStream fosRecipe = new FileOutputStream(recipeFile)){
             IOUtils.copy(file.getInputStream(),fosRecipe);

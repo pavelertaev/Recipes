@@ -97,4 +97,12 @@ public class FilesServiceImpl implements FilesService {
     public File getFileRecipe(){
         return new File(dataFilePath + "/" + recipesFileName);
     }
+    @Override
+    public void cleanIngredientFile(){
+        cleanFile(ingredientsFileName);
+    }
+    @Override
+    public void cleanRecipeFile(){
+        cleanFile(recipesFileName);
+    }
 }
