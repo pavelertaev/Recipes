@@ -8,7 +8,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Ingredient {
-    private String nameIngredient ;
-    private int amountIngredient ;
+    private String nameIngredient;
+    private int amountIngredient;
     private String unit;
+
+    @Override
+    public String toString() {
+        return nameIngredient + " - " + amountIngredient + " " + unit;
+    }
+
 }

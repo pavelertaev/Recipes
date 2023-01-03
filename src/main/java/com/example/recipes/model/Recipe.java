@@ -13,4 +13,22 @@ public class Recipe {
     private int timeForPreparing ;
     private List<Ingredient> ingredients;
     private List<String> steps;
+
+    @Override
+    public String toString() {
+        StringBuilder buffer = new StringBuilder();
+        buffer.append(nameRecipe).append("\n");
+        buffer.append("Время приготовления: " + timeForPreparing + " мин.").append("\n");
+        buffer.append("Ингредиенты: ").append("\n");
+        for (Ingredient ingredient : ingredients) {
+            buffer.append("\t").append(ingredient).append("\n");
+        }
+        buffer.append("Инструкция приготовления").append("\n");
+        for (int i = 0; i < steps.size(); i++) {
+            buffer.append(i + 1).append(". ").append(steps.get(i)).append("/n");
+        }
+        return buffer.toString();
+    }
 }
+
+

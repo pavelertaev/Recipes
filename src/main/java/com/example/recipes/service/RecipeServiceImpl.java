@@ -4,9 +4,17 @@ import com.example.recipes.model.Recipe;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -61,6 +69,19 @@ public class RecipeServiceImpl implements RecipeService {
             return true;
         }
         return false;
+    }
+    @Override
+    public InputStreamResource createRecipesTxtFile() throws FileNotFoundException {
+        Path path = filesService.createTempFile("Recipes");
+        try (Writer writer = Files.newBufferedWriter(path, StandardOpenOption.APPEND)) {
+            for (Recipe recipe : recipes.values()) {
+                writer.append(recipe.toString());
+                writer.append("\n");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return new InputStreamResource(new FileInputStream(path.toFile()));
     }
 
     private void readFromFile() {

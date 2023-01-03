@@ -1,6 +1,7 @@
 package com.example.recipes.controllers;
 
 import com.example.recipes.service.FilesService;
+import com.example.recipes.service.RecipeService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -17,8 +18,11 @@ import java.io.*;
 public class FilesController {
     private final FilesService filesService;
 
-    public FilesController(FilesService filesService) {
+    public RecipeService recipeService;
+
+    public FilesController(FilesService filesService, RecipeService recipeService) {
         this.filesService = filesService;
+        this.recipeService = recipeService;
     }
 
     @GetMapping(value = "/export/ingredient" , produces = MediaType.APPLICATION_JSON_VALUE)
@@ -35,6 +39,16 @@ public class FilesController {
         } else {
             return ResponseEntity.noContent().build();
         }
+    }
+    @GetMapping("/export/recipes/txt")
+    public ResponseEntity<InputStreamResource> downloadRecipeTxtFile() throws IOException {
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.TEXT_PLAIN)
+                .contentLength(recipeService.createRecipesTxtFile().contentLength())
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"recipes.txt\"")
+                .body(recipeService.createRecipesTxtFile());
+
     }
 
     @GetMapping(value = "/export/recipe" , produces = MediaType.APPLICATION_JSON_VALUE)
