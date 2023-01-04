@@ -45,7 +45,7 @@ public class IngredientController {
     }
 
 
-    @GetMapping("/get")
+    @GetMapping
     @Operation(description = "Поиск ингредиента по id")
     @ApiResponses(value = {
             @ApiResponse(

@@ -45,7 +45,7 @@ public class RecipeController {
         return ResponseEntity.ok(recipe);
     }
 
-    @GetMapping("/get")
+    @GetMapping
     @Operation(description = "Поиск рецепта по id")
     @ApiResponses(value = {
             @ApiResponse(
@@ -73,11 +73,11 @@ public class RecipeController {
     @PutMapping("/{id}")
     @Operation(description = "Изменение рецепта по id")
     public ResponseEntity<Recipe> editIngredient(@PathVariable long id, @RequestBody Recipe newRecipe) {
-        if (recipeService.getRecipe(id) != null) {
-            Recipe recipe = recipeService.editRecipe(id, newRecipe);
-            return ResponseEntity.ok(recipe);
+        if (recipeService.getRecipe(id) == null) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
+        Recipe recipe = recipeService.editRecipe(id, newRecipe);
+        return ResponseEntity.ok(recipe);
     }
 
     @DeleteMapping("/{id}")
