@@ -8,10 +8,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -71,7 +68,7 @@ public class RecipeServiceImpl implements RecipeService {
         return false;
     }
     @Override
-    public InputStreamResource createRecipesTxtFile() throws FileNotFoundException {
+    public File createRecipesTxtFile() throws FileNotFoundException {
         Path path = filesService.createTempFile("Recipes");
         try (Writer writer = Files.newBufferedWriter(path, StandardOpenOption.APPEND)) {
             for (Recipe recipe : recipes.values()) {
@@ -81,7 +78,7 @@ public class RecipeServiceImpl implements RecipeService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return new InputStreamResource(new FileInputStream(path.toFile()));
+        return path.toFile();
     }
 
     private void readFromFile() {

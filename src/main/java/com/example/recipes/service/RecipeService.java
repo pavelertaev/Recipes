@@ -1,9 +1,8 @@
 package com.example.recipes.service;
 
-import com.example.recipes.model.Ingredient;
 import com.example.recipes.model.Recipe;
-import org.springframework.core.io.InputStreamResource;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 
 public interface RecipeService {
@@ -14,5 +13,5 @@ public interface RecipeService {
 
     boolean deleteRecipe(long id);
 
-    InputStreamResource createRecipesTxtFile() throws FileNotFoundException;
+    File createRecipesTxtFile() throws FileNotFoundException;
 }

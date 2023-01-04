@@ -42,12 +42,13 @@ public class FilesController {
     }
     @GetMapping("/export/recipes/txt")
     public ResponseEntity<InputStreamResource> downloadRecipeTxtFile() throws IOException {
-
+        File file = recipeService.createRecipesTxtFile();
+        InputStreamResource ior = new InputStreamResource(new FileInputStream(file));
         return ResponseEntity.ok()
                 .contentType(MediaType.TEXT_PLAIN)
-                .contentLength(recipeService.createRecipesTxtFile().contentLength())
+                .contentLength(file.length())
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"recipes.txt\"")
-                .body(recipeService.createRecipesTxtFile());
+                .body(ior);
 
     }
 
